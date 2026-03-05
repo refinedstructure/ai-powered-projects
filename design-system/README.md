@@ -35,7 +35,6 @@ design-system/
 │   ├── ui.html
 │   └── README.md
 └── tokens/
-    ├── figma-tokens.json  ← Figma Tokens Studio (composable sets)
     ├── globals.css        ← CSS custom properties (Lovable / any web project)
     ├── tailwind.config.js ← Tailwind v3+ config (Lovable)
     └── README.md          ← Integration guides per platform
@@ -45,16 +44,11 @@ design-system/
 
 ## Quick start
 
-### Figma (native plugin — recommended)
+### Figma
 1. In Figma: **Plugins → Development → Import plugin from manifest**
 2. Point to `figma-plugin/manifest.json`
 3. Run → tick what you need → **Generate Design System**
    - Creates all color + text styles, button components, glass card, mobile preview
-
-### Figma (Tokens Studio — alternative)
-1. Install [Tokens Studio](https://tokens.studio) plugin
-2. Sync → Local file → `tokens/figma-tokens.json`
-3. Activate sets: `global` + `[theme]` + `semantic/dark` or `semantic/light`
 
 ### Lovable
 ```html
@@ -86,6 +80,6 @@ Paste this line at the start of a new session:
 |----------|--------|-------------|
 | Web (CSS vars) | ✅ v0.1 | `globals.css` |
 | Lovable (Tailwind) | ✅ v0.1 | `tailwind.config.js` + `globals.css` |
-| Figma | ✅ v0.1 | Native plugin (`figma-plugin/`) or `figma-tokens.json` via Tokens Studio |
+| Figma | ✅ v0.1 | Native plugin (`figma-plugin/`) |
 | SwiftUI (iOS 26) | 📐 Mapped | See `tokens/README.md` SwiftUI table |
 | React Native | 🔜 v0.2 | — |
