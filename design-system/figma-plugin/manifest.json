@@ -1,0 +1,9 @@
+{
+  "name": "Ship Lab Design System v0.1",
+  "id": "ship-lab-design-system-v01",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"],
+  "ui": "ui.html",
+  "documentAccess": "dynamic-page"
+}

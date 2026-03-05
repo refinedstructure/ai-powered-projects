@@ -1,0 +1,345 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Ship Lab Design System v0.1 — CSS Custom Properties
+   Compatible with: Lovable, shadcn/ui, Next.js, Vite, any Tailwind project.
+
+   Usage:
+     1. Import this file in your app root (e.g. globals.css or layout.tsx)
+     2. Set data-theme="violet|electric|teal|rose|sunrise" on <html>
+     3. Set data-mode="light" for light mode (dark is default)
+     4. Reference tokens via var(--ds-primary), etc.
+
+   Tailwind: see tailwind.config.js for utility class bindings.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Semantic tokens (shared across all themes) ───────────────────────────── */
+:root {
+  /* Typography */
+  --ds-font:              'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ds-text-xs:           10px;
+  --ds-text-sm:           12px;
+  --ds-text-base:         15px;
+  --ds-text-md:           16px;
+  --ds-text-lg:           20px;
+  --ds-text-xl:           28px;
+
+  /* Border radius */
+  --ds-radius-sm:         10px;
+  --ds-radius:            14px;
+  --ds-radius-full:       9999px;
+  --ds-radius-tab-bar:    22px;  /* iOS 26 floating capsule tab bar */
+  --ds-radius-phone:      46px;  /* Phone frame outer */
+
+  /* Spacing */
+  --ds-space-xs:          4px;
+  --ds-space-sm:          8px;
+  --ds-space-md:          14px;
+  --ds-space-lg:          20px;
+  --ds-space-xl:          24px;
+  --ds-space-2xl:         40px;
+
+  /* iOS HIG sizing */
+  --ds-touch-target:      44px;
+  --ds-fab-size:          52px;
+
+  /* Status colors — consistent across all themes and modes */
+  --ds-done:              #34D399;
+  --ds-done-bg:           rgba(52, 211, 153, 0.12);
+  --ds-done-border:       rgba(52, 211, 153, 0.22);
+  --ds-due:               #FBBF24;
+  --ds-due-bg:            rgba(251, 191, 36, 0.12);
+  --ds-due-border:        rgba(251, 191, 36, 0.22);
+
+  /* Destructive */
+  --ds-destructive:       #F87171;
+  --ds-destructive-light: #B91C1C;
+}
+
+/* ── Dark mode base (default) ─────────────────────────────────────────────── */
+:root,
+[data-mode="dark"] {
+  --ds-text-primary:      #FFFFFF;
+  --ds-text-secondary:    rgba(255, 255, 255, 0.70);
+  --ds-text-muted:        rgba(255, 255, 255, 0.56);
+  --ds-text-label:        rgba(255, 255, 255, 0.52);
+  --ds-border:            rgba(255, 255, 255, 0.12);
+  --ds-border-ghost:      rgba(255, 255, 255, 0.26);
+  --ds-divider:           rgba(255, 255, 255, 0.08);
+  --ds-ghost-fg:          rgba(255, 255, 255, 0.82);
+  --ds-panel-bg:          rgba(255, 255, 255, 0.05);
+  --ds-panel-border:      rgba(255, 255, 255, 0.09);
+  /* Glass surfaces */
+  --ds-glass-bg:          rgba(255, 255, 255, 0.07);
+  --ds-glass-el-bg:       rgba(255, 255, 255, 0.11);
+  --ds-glass-border:      rgba(255, 255, 255, 0.10);
+  /* iOS 26 Liquid Glass */
+  --ds-lg-bg:             linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.03) 32%, rgba(255,255,255,0.05) 100%);
+  --ds-lg-border:         rgba(255, 255, 255, 0.13);
+  --ds-lg-specular:       rgba(255, 255, 255, 0.50);  /* border-top-color */
+  --ds-lg-inner:          rgba(255, 255, 255, 0.32);  /* inset 0 1px 0 */
+  --ds-lg-drop:           0 8px 32px rgba(0,0,0,0.32), 0 2px 8px rgba(0,0,0,0.18);
+  /* Active badge */
+  --ds-active-bg:         rgba(255, 255, 255, 0.12);
+  --ds-active-fg:         rgba(255, 255, 255, 0.85);
+  --ds-active-border:     rgba(255, 255, 255, 0.20);
+  /* Shadows */
+  --ds-shadow-card:       0 8px 40px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.30);
+}
+
+/* ── Light mode base ──────────────────────────────────────────────────────── */
+[data-mode="light"] {
+  --ds-text-primary:      #111827;
+  --ds-text-secondary:    #374151;
+  --ds-text-muted:        #6B7280;
+  --ds-text-label:        #9CA3AF;
+  --ds-border:            rgba(0, 0, 0, 0.10);
+  --ds-border-ghost:      rgba(0, 0, 0, 0.22);
+  --ds-divider:           rgba(0, 0, 0, 0.07);
+  --ds-ghost-fg:          #4B5563;
+  --ds-panel-bg:          rgba(255, 255, 255, 0.50);
+  --ds-panel-border:      rgba(0, 0, 0, 0.06);
+  /* Glass surfaces */
+  --ds-glass-bg:          rgba(255, 255, 255, 0.68);
+  --ds-glass-el-bg:       rgba(255, 255, 255, 0.85);
+  --ds-glass-border:      rgba(255, 255, 255, 0.88);
+  /* iOS 26 Liquid Glass */
+  --ds-lg-bg:             linear-gradient(180deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.44) 32%, rgba(255,255,255,0.50) 100%);
+  --ds-lg-border:         rgba(255, 255, 255, 0.72);
+  --ds-lg-specular:       rgba(255, 255, 255, 1.0);
+  --ds-lg-inner:          rgba(255, 255, 255, 0.95);
+  --ds-lg-drop:           0 6px 22px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  /* Active badge */
+  --ds-active-bg:         rgba(0, 0, 0, 0.06);
+  --ds-active-fg:         #111827;
+  --ds-active-border:     rgba(0, 0, 0, 0.12);
+  /* Shadows */
+  --ds-shadow-card:       0 4px 20px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  /* Status colors — higher contrast for light mode */
+  --ds-done:              #059669;
+  --ds-done-bg:           rgba(5, 150, 105, 0.10);
+  --ds-done-border:       rgba(5, 150, 105, 0.20);
+  --ds-due:               #D97706;
+  --ds-due-bg:            rgba(217, 119, 6, 0.10);
+  --ds-due-border:        rgba(217, 119, 6, 0.20);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THEME OVERRIDES — set data-theme on <html> or any container
+   Each theme provides: --ds-primary, --ds-end, --ds-accent, --ds-base,
+   --ds-primary-gradient, --ds-glow, --ds-secondary-*, --ds-total-*
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Violet (default) ─────────────────────────────────────────────────────── */
+:root,
+[data-theme="violet"] {
+  --ds-primary:           #7C3AED;
+  --ds-end:               #6366F1;
+  --ds-accent:            #22D3EE;
+  --ds-base-dark:         #0D0B1A;
+  --ds-base-light:        #EAE7FF;
+  --ds-primary-gradient:  linear-gradient(135deg, #7C3AED 0%, #6366F1 100%);
+  --ds-glow-dark:         0 0 28px rgba(124,58,237,0.60), 0 4px 16px rgba(99,102,241,0.40);
+  --ds-glow-light:        0 0 14px rgba(124,58,237,0.28), 0 4px 10px rgba(99,102,241,0.18);
+  --ds-secondary-bg:      rgba(124, 58, 237, 0.16);  /* dark */
+  --ds-secondary-border:  rgba(124, 58, 237, 0.35);
+  --ds-secondary-fg:      #ffffff;
+  --ds-total-color:       rgb(188, 174, 246);  /* lightenHex(#7C3AED, 0.55) */
+  --ds-total-bg:          rgba(124, 58, 237, 0.14);
+  --ds-total-border:      rgba(124, 58, 237, 0.26);
+}
+[data-theme="violet"][data-mode="light"] {
+  --ds-secondary-bg:      rgba(124, 58, 237, 0.10);
+  --ds-secondary-border:  rgba(124, 58, 237, 0.28);
+  --ds-secondary-fg:      #7C3AED;
+  --ds-total-color:       #7C3AED;
+  --ds-total-bg:          rgba(124, 58, 237, 0.10);
+  --ds-total-border:      rgba(124, 58, 237, 0.20);
+}
+
+/* ── Electric ─────────────────────────────────────────────────────────────── */
+[data-theme="electric"] {
+  --ds-primary:           #1D4ED8;
+  --ds-end:               #4338CA;
+  --ds-accent:            #A3E635;
+  --ds-base-dark:         #070B1A;
+  --ds-base-light:        #E7EAFF;
+  --ds-primary-gradient:  linear-gradient(135deg, #1D4ED8 0%, #4338CA 100%);
+  --ds-glow-dark:         0 0 28px rgba(29,78,216,0.60), 0 4px 16px rgba(67,56,202,0.40);
+  --ds-glow-light:        0 0 14px rgba(29,78,216,0.28), 0 4px 10px rgba(67,56,202,0.18);
+  --ds-secondary-bg:      rgba(29, 78, 216, 0.16);
+  --ds-secondary-border:  rgba(29, 78, 216, 0.35);
+  --ds-secondary-fg:      #ffffff;
+  --ds-total-color:       rgb(154, 176, 237);
+  --ds-total-bg:          rgba(29, 78, 216, 0.14);
+  --ds-total-border:      rgba(29, 78, 216, 0.26);
+}
+[data-theme="electric"][data-mode="light"] {
+  --ds-secondary-bg:      rgba(29, 78, 216, 0.10);
+  --ds-secondary-border:  rgba(29, 78, 216, 0.28);
+  --ds-secondary-fg:      #1D4ED8;
+  --ds-total-color:       #1D4ED8;
+  --ds-total-bg:          rgba(29, 78, 216, 0.10);
+  --ds-total-border:      rgba(29, 78, 216, 0.20);
+}
+
+/* ── Teal ─────────────────────────────────────────────────────────────────── */
+[data-theme="teal"] {
+  --ds-primary:           #0D9488;
+  --ds-end:               #0369A1;
+  --ds-accent:            #FB923C;
+  --ds-base-dark:         #061A18;
+  --ds-base-light:        #E4F5F4;
+  --ds-primary-gradient:  linear-gradient(135deg, #0D9488 0%, #0369A1 100%);
+  --ds-glow-dark:         0 0 28px rgba(13,148,136,0.60), 0 4px 16px rgba(3,105,161,0.40);
+  --ds-glow-light:        0 0 14px rgba(13,148,136,0.28), 0 4px 10px rgba(3,105,161,0.18);
+  --ds-secondary-bg:      rgba(13, 148, 136, 0.16);
+  --ds-secondary-border:  rgba(13, 148, 136, 0.35);
+  --ds-secondary-fg:      #ffffff;
+  --ds-total-color:       rgb(134, 198, 195);
+  --ds-total-bg:          rgba(13, 148, 136, 0.14);
+  --ds-total-border:      rgba(13, 148, 136, 0.26);
+}
+[data-theme="teal"][data-mode="light"] {
+  --ds-secondary-bg:      rgba(13, 148, 136, 0.10);
+  --ds-secondary-border:  rgba(13, 148, 136, 0.28);
+  --ds-secondary-fg:      #0D9488;
+  --ds-total-color:       #0D9488;
+  --ds-total-bg:          rgba(13, 148, 136, 0.10);
+  --ds-total-border:      rgba(13, 148, 136, 0.20);
+}
+
+/* ── Rose ─────────────────────────────────────────────────────────────────── */
+[data-theme="rose"] {
+  --ds-primary:           #BE185D;
+  --ds-end:               #9333EA;
+  --ds-accent:            #FB923C;
+  --ds-base-dark:         #160818;
+  --ds-base-light:        #FBE9F3;
+  --ds-primary-gradient:  linear-gradient(135deg, #BE185D 0%, #9333EA 100%);
+  --ds-glow-dark:         0 0 28px rgba(190,24,93,0.60), 0 4px 16px rgba(147,51,234,0.40);
+  --ds-glow-light:        0 0 14px rgba(190,24,93,0.28), 0 4px 10px rgba(147,51,234,0.18);
+  --ds-secondary-bg:      rgba(190, 24, 93, 0.16);
+  --ds-secondary-border:  rgba(190, 24, 93, 0.35);
+  --ds-secondary-fg:      #ffffff;
+  --ds-total-color:       rgb(214, 153, 182);
+  --ds-total-bg:          rgba(190, 24, 93, 0.14);
+  --ds-total-border:      rgba(190, 24, 93, 0.26);
+}
+[data-theme="rose"][data-mode="light"] {
+  --ds-secondary-bg:      rgba(190, 24, 93, 0.10);
+  --ds-secondary-border:  rgba(190, 24, 93, 0.28);
+  --ds-secondary-fg:      #BE185D;
+  --ds-total-color:       #BE185D;
+  --ds-total-bg:          rgba(190, 24, 93, 0.10);
+  --ds-total-border:      rgba(190, 24, 93, 0.20);
+}
+
+/* ── Sunrise ──────────────────────────────────────────────────────────────── */
+[data-theme="sunrise"] {
+  --ds-primary:           #D97706;
+  --ds-end:               #DC2626;
+  --ds-accent:            #A78BFA;
+  --ds-base-dark:         #140C00;
+  --ds-base-light:        #FFFBEB;
+  --ds-primary-gradient:  linear-gradient(135deg, #D97706 0%, #DC2626 100%);
+  --ds-glow-dark:         0 0 28px rgba(217,119,6,0.60), 0 4px 16px rgba(220,38,38,0.40);
+  --ds-glow-light:        0 0 14px rgba(217,119,6,0.28), 0 4px 10px rgba(220,38,38,0.18);
+  --ds-secondary-bg:      rgba(217, 119, 6, 0.16);
+  --ds-secondary-border:  rgba(217, 119, 6, 0.35);
+  --ds-secondary-fg:      #ffffff;
+  --ds-total-color:       rgb(236, 192, 130);
+  --ds-total-bg:          rgba(217, 119, 6, 0.14);
+  --ds-total-border:      rgba(217, 119, 6, 0.26);
+}
+[data-theme="sunrise"][data-mode="light"] {
+  --ds-secondary-bg:      rgba(217, 119, 6, 0.10);
+  --ds-secondary-border:  rgba(217, 119, 6, 0.28);
+  --ds-secondary-fg:      #D97706;
+  --ds-total-color:       #D97706;
+  --ds-total-bg:          rgba(217, 119, 6, 0.10);
+  --ds-total-border:      rgba(217, 119, 6, 0.20);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COMPONENT CLASSES — Liquid Glass surfaces
+   Apply directly or use as reference for Tailwind @apply
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* iOS 26 Liquid Glass material */
+.ds-glass {
+  backdrop-filter: blur(40px) saturate(220%);
+  -webkit-backdrop-filter: blur(40px) saturate(220%);
+  background: var(--ds-lg-bg);
+  border: 1px solid var(--ds-lg-border);
+  border-top-color: var(--ds-lg-specular);
+  box-shadow: inset 0 1px 0 var(--ds-lg-inner), var(--ds-lg-drop);
+}
+
+/* Card */
+.ds-card {
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  background: var(--ds-glass-bg);
+  border: 1px solid var(--ds-glass-border);
+  border-radius: var(--ds-radius);
+  box-shadow: var(--ds-shadow-card);
+}
+
+/* Primary button */
+.ds-btn-primary {
+  background: var(--ds-primary-gradient);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--ds-radius-full);
+  height: var(--ds-touch-target);
+  padding: 0 24px;
+  font-size: var(--ds-text-base);
+  font-weight: 600;
+  font-family: var(--ds-font);
+  box-shadow: var(--ds-glow-dark);
+  cursor: pointer;
+  transition: filter 0.12s ease, box-shadow 0.12s ease, transform 0.10s ease;
+}
+.ds-btn-primary:hover  { filter: brightness(1.08); }
+.ds-btn-primary:active { filter: brightness(0.93); transform: scale(0.97); }
+
+/* Secondary button */
+.ds-btn-secondary {
+  background: var(--ds-secondary-bg);
+  color: var(--ds-secondary-fg);
+  border: 1px solid var(--ds-secondary-border);
+  border-radius: var(--ds-radius-full);
+  height: var(--ds-touch-target);
+  padding: 0 24px;
+  font-size: var(--ds-text-base);
+  font-weight: 600;
+  font-family: var(--ds-font);
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+/* FAB */
+.ds-fab {
+  background: var(--ds-primary-gradient);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-top-color: rgba(255,255,255,0.55);
+  border-radius: 50%;
+  width: var(--ds-fab-size);
+  height: var(--ds-fab-size);
+  box-shadow: var(--ds-glow-dark), inset 0 1px 0 rgba(255,255,255,0.38), 0 6px 22px rgba(0,0,0,0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* iOS 26 floating tab bar */
+.ds-tab-bar {
+  backdrop-filter: blur(40px) saturate(220%);
+  -webkit-backdrop-filter: blur(40px) saturate(220%);
+  background: var(--ds-lg-bg);
+  border: 1px solid var(--ds-lg-border);
+  border-top-color: var(--ds-lg-specular);
+  box-shadow: inset 0 1px 0 var(--ds-lg-inner), var(--ds-lg-drop);
+  border-radius: var(--ds-radius-tab-bar);
+}

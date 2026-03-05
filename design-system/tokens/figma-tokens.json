@@ -1,0 +1,198 @@
+{
+  "$metadata": {
+    "tokenSetOrder": ["global", "violet", "electric", "teal", "rose", "sunrise", "semantic/dark", "semantic/light"]
+  },
+
+  "global": {
+    "radius": {
+      "sm":   { "value": "10", "type": "borderRadius", "description": "Small radius — stat tiles, inner elements" },
+      "md":   { "value": "14", "type": "borderRadius", "description": "Default card radius" },
+      "full": { "value": "9999", "type": "borderRadius", "description": "Pills, badges, FAB" }
+    },
+    "typography": {
+      "fontFamily": { "value": "Inter, -apple-system, BlinkMacSystemFont, sans-serif", "type": "fontFamilies" },
+      "size": {
+        "xs":   { "value": "10", "type": "fontSizes" },
+        "sm":   { "value": "12", "type": "fontSizes" },
+        "base": { "value": "15", "type": "fontSizes" },
+        "md":   { "value": "16", "type": "fontSizes" },
+        "lg":   { "value": "20", "type": "fontSizes" },
+        "xl":   { "value": "28", "type": "fontSizes" }
+      },
+      "weight": {
+        "regular":  { "value": "400", "type": "fontWeights" },
+        "medium":   { "value": "500", "type": "fontWeights" },
+        "semibold": { "value": "600", "type": "fontWeights" },
+        "bold":     { "value": "700", "type": "fontWeights" },
+        "black":    { "value": "800", "type": "fontWeights" }
+      },
+      "lineHeight": {
+        "tight":  { "value": "1",   "type": "lineHeights" },
+        "normal": { "value": "1.5", "type": "lineHeights" }
+      },
+      "letterSpacing": {
+        "tight": { "value": "-0.02em", "type": "letterSpacing" },
+        "base":  { "value": "-0.01em", "type": "letterSpacing" },
+        "none":  { "value": "0",       "type": "letterSpacing" }
+      }
+    },
+    "spacing": {
+      "xs":  { "value": "4",  "type": "spacing" },
+      "sm":  { "value": "8",  "type": "spacing" },
+      "md":  { "value": "14", "type": "spacing" },
+      "lg":  { "value": "20", "type": "spacing" },
+      "xl":  { "value": "24", "type": "spacing" },
+      "2xl": { "value": "40", "type": "spacing" }
+    },
+    "sizing": {
+      "touchTarget": { "value": "44", "type": "sizing", "description": "iOS HIG minimum touch target" },
+      "fab":         { "value": "52", "type": "sizing", "description": "Floating action button" },
+      "iconSm":      { "value": "15", "type": "sizing" },
+      "iconMd":      { "value": "20", "type": "sizing" },
+      "iconLg":      { "value": "24", "type": "sizing" }
+    }
+  },
+
+  "violet": {
+    "color": {
+      "primary":   { "value": "#7C3AED", "type": "color" },
+      "end":       { "value": "#6366F1", "type": "color", "description": "Gradient end — same hue family as primary" },
+      "accent":    { "value": "#22D3EE", "type": "color", "description": "Semantic highlight — active dots, decorative elements" },
+      "darkBase":  { "value": "#0D0B1A", "type": "color" },
+      "lightBase": { "value": "#EAE7FF", "type": "color" },
+      "blob0":     { "value": "#7C3AED", "type": "color", "description": "Left ambient glow" },
+      "blob1":     { "value": "#06B6D4", "type": "color", "description": "Right ambient glow" },
+      "blob2":     { "value": "#EC4899", "type": "color", "description": "Top ambient glow" }
+    }
+  },
+
+  "electric": {
+    "color": {
+      "primary":   { "value": "#1D4ED8", "type": "color" },
+      "end":       { "value": "#4338CA", "type": "color" },
+      "accent":    { "value": "#A3E635", "type": "color" },
+      "darkBase":  { "value": "#070B1A", "type": "color" },
+      "lightBase": { "value": "#E7EAFF", "type": "color" },
+      "blob0":     { "value": "#2563EB", "type": "color" },
+      "blob1":     { "value": "#4F46E5", "type": "color" },
+      "blob2":     { "value": "#06B6D4", "type": "color" }
+    }
+  },
+
+  "teal": {
+    "color": {
+      "primary":   { "value": "#0D9488", "type": "color" },
+      "end":       { "value": "#0369A1", "type": "color" },
+      "accent":    { "value": "#FB923C", "type": "color" },
+      "darkBase":  { "value": "#061A18", "type": "color" },
+      "lightBase": { "value": "#E4F5F4", "type": "color" },
+      "blob0":     { "value": "#0D9488", "type": "color" },
+      "blob1":     { "value": "#0891B2", "type": "color" },
+      "blob2":     { "value": "#7C3AED", "type": "color" }
+    }
+  },
+
+  "rose": {
+    "color": {
+      "primary":   { "value": "#BE185D", "type": "color" },
+      "end":       { "value": "#9333EA", "type": "color" },
+      "accent":    { "value": "#FB923C", "type": "color" },
+      "darkBase":  { "value": "#160818", "type": "color" },
+      "lightBase": { "value": "#FBE9F3", "type": "color" },
+      "blob0":     { "value": "#E11D48", "type": "color" },
+      "blob1":     { "value": "#9333EA", "type": "color" },
+      "blob2":     { "value": "#F59E0B", "type": "color" }
+    }
+  },
+
+  "sunrise": {
+    "color": {
+      "primary":   { "value": "#D97706", "type": "color" },
+      "end":       { "value": "#DC2626", "type": "color" },
+      "accent":    { "value": "#A78BFA", "type": "color" },
+      "darkBase":  { "value": "#140C00", "type": "color" },
+      "lightBase": { "value": "#FFFBEB", "type": "color" },
+      "blob0":     { "value": "#92400E", "type": "color" },
+      "blob1":     { "value": "#7F1D1D", "type": "color" },
+      "blob2":     { "value": "#4C1D95", "type": "color" }
+    }
+  },
+
+  "semantic/dark": {
+    "description": "Compose with a theme set. e.g. [global + violet + semantic/dark] = full violet dark token set.",
+    "text": {
+      "primary":   { "value": "#FFFFFF",              "type": "color" },
+      "secondary": { "value": "rgba(255,255,255,0.7)", "type": "color" },
+      "muted":     { "value": "rgba(255,255,255,0.56)", "type": "color" },
+      "label":     { "value": "rgba(255,255,255,0.52)", "type": "color" }
+    },
+    "surface": {
+      "glass":         { "value": "rgba(255,255,255,0.07)", "type": "color", "description": "Card base" },
+      "glassElevated": { "value": "rgba(255,255,255,0.11)", "type": "color", "description": "Nested elements" },
+      "panel":         { "value": "rgba(255,255,255,0.05)", "type": "color" }
+    },
+    "border": {
+      "default": { "value": "rgba(255,255,255,0.12)", "type": "color" },
+      "ghost":   { "value": "rgba(255,255,255,0.26)", "type": "color" }
+    },
+    "status": {
+      "done":        { "value": "#34D399",              "type": "color" },
+      "doneBg":      { "value": "rgba(52,211,153,0.12)", "type": "color" },
+      "doneBorder":  { "value": "rgba(52,211,153,0.22)", "type": "color" },
+      "due":         { "value": "#FBBF24",              "type": "color" },
+      "dueBg":       { "value": "rgba(251,191,36,0.12)", "type": "color" },
+      "dueBorder":   { "value": "rgba(251,191,36,0.22)", "type": "color" },
+      "pass":        { "value": "#34D399",              "type": "color" },
+      "warn":        { "value": "#FBBF24",              "type": "color" },
+      "fail":        { "value": "#F87171",              "type": "color" }
+    },
+    "liquidGlass": {
+      "description": "iOS 26 Liquid Glass material — CSS: backdrop-filter + specular gradient + border-top at 2× opacity",
+      "blur":         { "value": "40px",                      "type": "other" },
+      "saturate":     { "value": "220%",                      "type": "other" },
+      "specularTop":  { "value": "rgba(255,255,255,0.50)",    "type": "color", "description": "border-top-color — specular edge" },
+      "border":       { "value": "rgba(255,255,255,0.13)",    "type": "color" },
+      "bodyBg":       { "value": "rgba(255,255,255,0.05)",    "type": "color", "description": "Average of gradient" },
+      "innerHighlight": { "value": "rgba(255,255,255,0.32)",  "type": "color", "description": "box-shadow inset 0 1px 0" }
+    }
+  },
+
+  "semantic/light": {
+    "description": "Compose with a theme set. e.g. [global + violet + semantic/light] = full violet light token set.",
+    "text": {
+      "primary":   { "value": "#111827", "type": "color" },
+      "secondary": { "value": "#374151", "type": "color" },
+      "muted":     { "value": "#6B7280", "type": "color" },
+      "label":     { "value": "#9CA3AF", "type": "color" }
+    },
+    "surface": {
+      "glass":         { "value": "rgba(255,255,255,0.68)", "type": "color" },
+      "glassElevated": { "value": "rgba(255,255,255,0.85)", "type": "color" },
+      "panel":         { "value": "rgba(255,255,255,0.50)", "type": "color" }
+    },
+    "border": {
+      "default": { "value": "rgba(0,0,0,0.10)", "type": "color" },
+      "ghost":   { "value": "rgba(0,0,0,0.22)", "type": "color" }
+    },
+    "status": {
+      "done":        { "value": "#059669",              "type": "color" },
+      "doneBg":      { "value": "rgba(5,150,105,0.1)",  "type": "color" },
+      "doneBorder":  { "value": "rgba(5,150,105,0.2)",  "type": "color" },
+      "due":         { "value": "#D97706",              "type": "color" },
+      "dueBg":       { "value": "rgba(217,119,6,0.1)",  "type": "color" },
+      "dueBorder":   { "value": "rgba(217,119,6,0.2)",  "type": "color" },
+      "pass":        { "value": "#059669",              "type": "color" },
+      "warn":        { "value": "#D97706",              "type": "color" },
+      "fail":        { "value": "#DC2626",              "type": "color" }
+    },
+    "liquidGlass": {
+      "description": "iOS 26 Liquid Glass — light mode variant",
+      "blur":           { "value": "40px",                    "type": "other" },
+      "saturate":       { "value": "220%",                    "type": "other" },
+      "specularTop":    { "value": "rgba(255,255,255,1.0)",   "type": "color" },
+      "border":         { "value": "rgba(255,255,255,0.72)",  "type": "color" },
+      "bodyBg":         { "value": "rgba(255,255,255,0.50)",  "type": "color" },
+      "innerHighlight": { "value": "rgba(255,255,255,0.95)",  "type": "color" }
+    }
+  }
+}

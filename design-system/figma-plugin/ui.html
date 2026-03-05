@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      font-size: 13px;
+      background: #1E1E1E;
+      color: #E0E0E0;
+      padding: 16px;
+      width: 280px;
+    }
+    h2 { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: #fff; }
+    p  { font-size: 12px; color: #999; line-height: 1.5; margin-bottom: 12px; }
+    .section { margin-bottom: 14px; }
+    label { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 6px; cursor: pointer; }
+    input[type="checkbox"] { accent-color: #7C3AED; width: 14px; height: 14px; }
+    button {
+      width: 100%; padding: 9px 0; border-radius: 8px;
+      border: none; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: filter 0.15s;
+    }
+    #run {
+      background: linear-gradient(135deg, #7C3AED, #6366F1);
+      color: #fff; margin-bottom: 8px;
+    }
+    #run:hover { filter: brightness(1.1); }
+    #run:disabled { opacity: 0.45; cursor: not-allowed; }
+    #cancel { background: rgba(255,255,255,0.08); color: #ccc; }
+    #cancel:hover { background: rgba(255,255,255,0.12); }
+    #status {
+      font-size: 11px; color: #7C3AED; margin-top: 8px;
+      min-height: 16px; text-align: center;
+    }
+    .divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <h2>Ship Lab DS — v0.1</h2>
+  <p>Generates the full design system on the current page: color styles, text styles, and component frames.</p>
+
+  <hr class="divider">
+
+  <div class="section">
+    <label><input type="checkbox" id="chk-styles" checked> Color &amp; text styles</label>
+    <label><input type="checkbox" id="chk-palette" checked> Color palette frame</label>
+    <label><input type="checkbox" id="chk-buttons" checked> Button components</label>
+    <label><input type="checkbox" id="chk-card" checked> Glass card component</label>
+    <label><input type="checkbox" id="chk-mobile" checked> Mobile preview frame</label>
+  </div>
+
+  <button id="run">Generate Design System</button>
+  <button id="cancel">Cancel</button>
+  <div id="status"></div>
+
+  <script>
+    document.getElementById('run').onclick = () => {
+      const opts = {
+        styles:  document.getElementById('chk-styles').checked,
+        palette: document.getElementById('chk-palette').checked,
+        buttons: document.getElementById('chk-buttons').checked,
+        card:    document.getElementById('chk-card').checked,
+        mobile:  document.getElementById('chk-mobile').checked,
+      };
+      document.getElementById('run').disabled = true;
+      document.getElementById('status').textContent = 'Generating…';
+      parent.postMessage({ pluginMessage: { type: 'generate', opts } }, '*');
+    };
+    document.getElementById('cancel').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    };
+    window.onmessage = e => {
+      const msg = e.data.pluginMessage;
+      if (!msg) return;
+      if (msg.type === 'progress') {
+        document.getElementById('status').textContent = msg.text;
+      }
+      if (msg.type === 'done') {
+        document.getElementById('status').textContent = '✓ Done! ' + msg.text;
+        document.getElementById('run').disabled = false;
+      }
+      if (msg.type === 'error') {
+        document.getElementById('status').textContent = '✗ ' + msg.text;
+        document.getElementById('run').disabled = false;
+      }
+    };
+  </script>
+</body>
+</html>
