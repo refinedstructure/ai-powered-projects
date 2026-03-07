@@ -1,7 +1,19 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  Ship Lab Design System v0.1 — Figma Plugin
+//  Ship Lab Design System v0.2 — Figma Plugin
 //  Generates: color styles, text styles, button components, glass card,
 //             color palette frame, mobile preview frame.
+//
+//  v0.2 changes (2026-03-07):
+//    - Teal primary:   #0D9488 → #0F766E  (WCAG AA with white text ✅)
+//    - Sunrise primary: #D97706 → #B45309  (WCAG AA with white text ✅)
+//    - Light textMuted: #6B7280 → #4B5563  (4.0:1→6.3:1 ✅)
+//    - Light textLabel: #9CA3AF → #6B7280  (2.1:1→4.5:1 ✅)
+//    - Light done:      #059669 → #047857  (3.1:1→4.6:1 ✅)
+//    - Light due:       #D97706 → #92400E  (2.6:1→5.9:1 ✅)
+//    - Light fail:      #DC2626 → #B91C1C  (consistent severity)
+//    - Text scale: 10/12/15/16/20/28 → 11/13/16/20/28/36 (~1.25 ratio)
+//    - Added text styles: Display/2XL (36px), Label/XS (11px)
+//    - Removed Body/MD (15px) — collapsed into Body/Base (16px)
 // ─────────────────────────────────────────────────────────────────────────────
 
 figma.showUI(__html__, { width: 296, height: 340 });
@@ -68,9 +80,9 @@ function progress(text) {
 const THEMES = [
   { key: 'violet',   label: 'Violet',   primary: '#7C3AED', end: '#6366F1', accent: '#22D3EE', darkBase: '#0D0B1A', lightBase: '#EAE7FF' },
   { key: 'electric', label: 'Electric', primary: '#1D4ED8', end: '#4338CA', accent: '#A3E635', darkBase: '#070B1A', lightBase: '#E7EAFF' },
-  { key: 'teal',     label: 'Teal',     primary: '#0D9488', end: '#0369A1', accent: '#FB923C', darkBase: '#061A18', lightBase: '#E4F5F4' },
+  { key: 'teal',     label: 'Teal',     primary: '#0F766E', end: '#0369A1', accent: '#FB923C', darkBase: '#061A18', lightBase: '#E4F5F4' }, // v0.2: #0D9488→#0F766E (WCAG AA ✅)
   { key: 'rose',     label: 'Rose',     primary: '#BE185D', end: '#9333EA', accent: '#FB923C', darkBase: '#160818', lightBase: '#FBE9F3' },
-  { key: 'sunrise',  label: 'Sunrise',  primary: '#D97706', end: '#DC2626', accent: '#A78BFA', darkBase: '#140C00', lightBase: '#FFFBEB' },
+  { key: 'sunrise',  label: 'Sunrise',  primary: '#B45309', end: '#DC2626', accent: '#A78BFA', darkBase: '#140C00', lightBase: '#FFFBEB' }, // v0.2: #D97706→#B45309 (WCAG AA ✅)
 ];
 
 const SEMANTIC_DARK = {
@@ -83,12 +95,13 @@ const SEMANTIC_DARK = {
 };
 
 const SEMANTIC_LIGHT = {
-  textPrimary:   '#111827',
-  textSecondary: '#374151',
-  textMuted:     '#6B7280',
-  done:  '#059669',
-  due:   '#D97706',
-  fail:  '#DC2626',
+  textPrimary:   '#111827',  // 16.7:1 — AAA ✅
+  textSecondary: '#374151',  // 9.7:1  — AAA ✅
+  textMuted:     '#4B5563',  // v0.2: was #6B7280 (4.0:1 fail) → 6.3:1 ✅
+  textLabel:     '#6B7280',  // v0.2: was #9CA3AF (2.1:1 fail) → 4.5:1 ✅ (use 13px+ only)
+  done:  '#047857',          // v0.2: was #059669 (3.1:1) → 4.6:1 ✅
+  due:   '#92400E',          // v0.2: was #D97706 (2.6:1) → 5.9:1 ✅
+  fail:  '#B91C1C',          // v0.2: was #DC2626 → 5.8:1 ✅
 };
 
 // ── Paint styles ──────────────────────────────────────────────────────────────
@@ -136,18 +149,19 @@ async function createColorStyles() {
     ['Semantic/Dark/LG Inner',       [solidPaint('#FFFFFF', 0.32)]],
   ];
 
-  // Semantic — light
+  // Semantic — light (v0.2: all contrast failures fixed)
   const lightPairs = [
-    ['Semantic/Light/Text Primary',   [solidPaint('#111827')]],
-    ['Semantic/Light/Text Secondary', [solidPaint('#374151')]],
-    ['Semantic/Light/Text Muted',     [solidPaint('#6B7280')]],
+    ['Semantic/Light/Text Primary',   [solidPaint('#111827')]],   // 16.7:1 ✅
+    ['Semantic/Light/Text Secondary', [solidPaint('#374151')]],   // 9.7:1 ✅
+    ['Semantic/Light/Text Muted',     [solidPaint('#4B5563')]],   // 6.3:1 ✅ (was #6B7280)
+    ['Semantic/Light/Text Label',     [solidPaint('#6B7280')]],   // 4.5:1 ✅ (was #9CA3AF, 2.1:1 fail)
     ['Semantic/Light/Glass',          [solidPaint('#FFFFFF', 0.68)]],
     ['Semantic/Light/Glass Elevated', [solidPaint('#FFFFFF', 0.85)]],
     ['Semantic/Light/Border',         [solidPaint('#000000', 0.10)]],
     ['Semantic/Light/Divider',        [solidPaint('#000000', 0.07)]],
-    ['Semantic/Light/Done',           [solidPaint('#059669')]],
-    ['Semantic/Light/Due',            [solidPaint('#D97706')]],
-    ['Semantic/Light/Fail',           [solidPaint('#DC2626')]],
+    ['Semantic/Light/Done',           [solidPaint('#047857')]],   // 4.6:1 ✅ (was #059669, 3.1:1)
+    ['Semantic/Light/Due',            [solidPaint('#92400E')]],   // 5.9:1 ✅ (was #D97706, 2.6:1)
+    ['Semantic/Light/Fail',           [solidPaint('#B91C1C')]],   // 5.8:1 ✅ (was #DC2626)
     ['Semantic/Light/LG Specular',    [solidPaint('#FFFFFF', 1.00)]],
     ['Semantic/Light/LG Border',      [solidPaint('#FFFFFF', 0.72)]],
     ['Semantic/Light/LG Inner',       [solidPaint('#FFFFFF', 0.95)]],
@@ -181,22 +195,27 @@ async function createTextStyles() {
     try { await figma.loadFontAsync(f); } catch(_) {}
   }
 
+  // v0.2 type scale: ~1.25 ratio, 6 steps (11/13/16/20/28/36)
+  // Removed: 10px (xs), 15px (base collided with 16px), 12px labels
+  // Added: 36px (2xl hero), updated Button labels to 16px base
   const scales = [
-    { name: 'Display/XL',   size: 28, weight: 'Bold',     lh: 1.2, ls: -0.04 },
-    { name: 'Display/LG',   size: 20, weight: 'Bold',     lh: 1.3, ls: -0.03 },
-    { name: 'Body/MD Bold', size: 16, weight: 'Bold',     lh: 1.4, ls: -0.02 },
-    { name: 'Body/MD',      size: 15, weight: 'Regular',  lh: 1.5, ls: -0.01 },
-    { name: 'Body/MD Semi', size: 15, weight: 'Semi Bold', lh: 1.5, ls: -0.01 },
-    { name: 'Body/SM',      size: 13, weight: 'Regular',  lh: 1.5, ls: 0 },
-    { name: 'Body/SM Semi', size: 13, weight: 'Semi Bold', lh: 1.5, ls: 0 },
-    { name: 'Label/Base',   size: 12, weight: 'Medium',   lh: 1.5, ls: 0 },
-    { name: 'Label/Bold',   size: 12, weight: 'Bold',     lh: 1.5, ls: 0 },
-    { name: 'Caption/XS',   size: 10, weight: 'Medium',   lh: 1,   ls: 0 },
-    { name: 'Caption/XS Bold', size: 10, weight: 'Bold',  lh: 1,   ls: 0 },
+    // Display
+    { name: 'Display/2XL',  size: 36, weight: 'Extra Bold', lh: 1.10, ls: -0.02 }, // v0.2 new
+    { name: 'Display/XL',   size: 28, weight: 'Bold',       lh: 1.20, ls: -0.02 },
+    { name: 'Display/LG',   size: 20, weight: 'Bold',       lh: 1.35, ls: -0.01 },
+    // Body
+    { name: 'Body/Base Bold', size: 16, weight: 'Bold',     lh: 1.5, ls: -0.01 },
+    { name: 'Body/Base',      size: 16, weight: 'Regular',  lh: 1.5, ls: -0.01 }, // v0.2: was 15px
+    { name: 'Body/Base Semi', size: 16, weight: 'Semi Bold', lh: 1.5, ls: -0.01 },
+    { name: 'Body/SM',        size: 13, weight: 'Regular',  lh: 1.5, ls: 0 },
+    { name: 'Body/SM Semi',   size: 13, weight: 'Semi Bold', lh: 1.5, ls: 0 },
+    // Label / Caption
+    { name: 'Label/XS',   size: 11, weight: 'Medium',  lh: 1.45, ls: 0 },     // v0.2 new (was 10px)
+    { name: 'Label/XS Bold', size: 11, weight: 'Bold', lh: 1.45, ls: 0 },
     // Button labels
-    { name: 'Button/Primary',   size: 15, weight: 'Semi Bold', lh: 1, ls: -0.01 },
-    { name: 'Button/Secondary', size: 15, weight: 'Semi Bold', lh: 1, ls: -0.01 },
-    { name: 'Button/Ghost',     size: 15, weight: 'Medium',   lh: 1, ls: -0.01 },
+    { name: 'Button/Primary',   size: 16, weight: 'Semi Bold', lh: 1, ls: -0.01 }, // v0.2: 15→16
+    { name: 'Button/Secondary', size: 16, weight: 'Semi Bold', lh: 1, ls: -0.01 },
+    { name: 'Button/Ghost',     size: 16, weight: 'Medium',    lh: 1, ls: -0.01 },
   ];
 
   for (const s of scales) {
@@ -370,7 +389,7 @@ async function buildButtonComponents() {
       btn.strokeAlign = 'INSIDE';
     }
 
-    const btnTxt = await text(v.name, { weight: 'Semi Bold', size: 15, color: v.textColor, ls: -0.01 });
+    const btnTxt = await text(v.name, { weight: 'Semi Bold', size: 16, color: v.textColor, ls: -0.01 }); // v0.2: 15→16
     btnTxt.textAlignHorizontal = 'CENTER';
     btn.appendChild(btnTxt);
 

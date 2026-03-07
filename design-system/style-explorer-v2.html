@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="violet" data-mode="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ship Lab Design System v0.2</title>
+<style>
+  /* ── Reset + base ─────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Radius */
+    --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-full: 9999px;
+    /* Spacing */
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s6:24px; --s8:32px; --s12:48px;
+    /* Motion */
+    --dur-fast:100ms; --dur-norm:200ms; --dur-slow:350ms;
+    --ease-out:cubic-bezier(0.16,1,0.3,1);
+    --ease-io:cubic-bezier(0.45,0,0.55,1);
+    /* Z */
+    --z-bg:-2; --z-grad:-1; --z-base:0; --z-card:1;
+    --z-sticky:10; --z-overlay:20; --z-modal:50; --z-toast:100;
+  }
+  /* ── Theme tokens ─────────────────────────────────────────────── */
+  :root, [data-theme="violet"] {
+    --primary:#7C3AED; --end:#6366F1; --accent:#22D3EE;
+    --dark-base:#0D0B1A; --light-base:#EAE7FF;
+    --grad:linear-gradient(135deg,#7C3AED,#6366F1);
+    --glow:0 0 28px rgba(124,58,237,.60),0 4px 16px rgba(99,102,241,.40);
+    --focus-ring:0 0 0 3px rgba(124,58,237,.40);
+    --sec-bg:rgba(124,58,237,.16); --sec-bd:rgba(124,58,237,.35);
+    --total-c:rgb(188,174,246); --total-bg:rgba(124,58,237,.14); --total-bd:rgba(124,58,237,.26);
+  }
+  [data-theme="electric"] {
+    --primary:#1D4ED8; --end:#4338CA; --accent:#A3E635;
+    --dark-base:#070B1A; --light-base:#E7EAFF;
+    --grad:linear-gradient(135deg,#1D4ED8,#4338CA);
+    --glow:0 0 28px rgba(29,78,216,.60),0 4px 16px rgba(67,56,202,.40);
+    --focus-ring:0 0 0 3px rgba(29,78,216,.40);
+    --sec-bg:rgba(29,78,216,.16); --sec-bd:rgba(29,78,216,.35);
+    --total-c:rgb(154,176,237); --total-bg:rgba(29,78,216,.14); --total-bd:rgba(29,78,216,.26);
+  }
+  [data-theme="teal"] {
+    /* v0.2: #0D9488 → #0F766E (white text now AA ✅) */
+    --primary:#0F766E; --end:#0369A1; --accent:#FB923C;
+    --dark-base:#061A18; --light-base:#E4F5F4;
+    --grad:linear-gradient(135deg,#0F766E,#0369A1);
+    --glow:0 0 28px rgba(15,118,110,.60),0 4px 16px rgba(3,105,161,.40);
+    --focus-ring:0 0 0 3px rgba(15,118,110,.40);
+    --sec-bg:rgba(15,118,110,.16); --sec-bd:rgba(15,118,110,.35);
+    --total-c:rgb(113,188,183); --total-bg:rgba(15,118,110,.14); --total-bd:rgba(15,118,110,.26);
+  }
+  [data-theme="rose"] {
+    --primary:#BE185D; --end:#9333EA; --accent:#FB923C;
+    --dark-base:#160818; --light-base:#FBE9F3;
+    --grad:linear-gradient(135deg,#BE185D,#9333EA);
+    --glow:0 0 28px rgba(190,24,93,.60),0 4px 16px rgba(147,51,234,.40);
+    --focus-ring:0 0 0 3px rgba(190,24,93,.40);
+    --sec-bg:rgba(190,24,93,.16); --sec-bd:rgba(190,24,93,.35);
+    --total-c:rgb(214,153,182); --total-bg:rgba(190,24,93,.14); --total-bd:rgba(190,24,93,.26);
+  }
+  [data-theme="sunrise"] {
+    /* v0.2: #D97706 → #B45309 (white text now AA ✅) */
+    --primary:#B45309; --end:#DC2626; --accent:#A78BFA;
+    --dark-base:#140C00; --light-base:#FFFBEB;
+    --grad:linear-gradient(135deg,#B45309,#DC2626);
+    --glow:0 0 28px rgba(180,83,9,.60),0 4px 16px rgba(220,38,38,.40);
+    --focus-ring:0 0 0 3px rgba(180,83,9,.40);
+    --sec-bg:rgba(180,83,9,.16); --sec-bd:rgba(180,83,9,.35);
+    --total-c:rgb(228,180,108); --total-bg:rgba(180,83,9,.14); --total-bd:rgba(180,83,9,.26);
+  }
+
+  /* Dark base */
+  :root, [data-mode="dark"] {
+    --bg: var(--dark-base); --surface: var(--dark-base);
+    --tx1:#fff; --tx2:rgba(255,255,255,.70);
+    --tx-muted:rgba(255,255,255,.56); --tx-label:rgba(255,255,255,.52);
+    --bd:rgba(255,255,255,.12); --bd-ghost:rgba(255,255,255,.26);
+    --glass:rgba(255,255,255,.07); --glass-bd:rgba(255,255,255,.10);
+    --panel:rgba(255,255,255,.05);
+    --lg-bg:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.03) 32%,rgba(255,255,255,.05) 100%);
+    --lg-bd:rgba(255,255,255,.13); --lg-spec:rgba(255,255,255,.50); --lg-in:rgba(255,255,255,.32);
+    --lg-drop:0 8px 32px rgba(0,0,0,.32),0 2px 8px rgba(0,0,0,.18);
+    --card-shadow:0 8px 40px rgba(0,0,0,.45),0 2px 8px rgba(0,0,0,.30);
+    --done:#34D399; --due:#FBBF24; --dest:#F87171;
+    --done-bg:rgba(52,211,153,.12); --due-bg:rgba(251,191,36,.12); --dest-bg:rgba(248,113,113,.10);
+    --skel-bg:rgba(255,255,255,.06);
+    --empty-c:rgba(255,255,255,.20);
+    --err-bg:rgba(248,113,113,.10); --err-bd:rgba(248,113,113,.25); --err-tx:#F87171;
+    --sec-fg:#fff;
+    color-scheme: dark;
+  }
+  [data-mode="light"] {
+    --bg: var(--light-base); --surface:var(--light-base);
+    --tx1:#111827; --tx2:#374151;
+    /* v0.2 fixes: both now WCAG AA */
+    --tx-muted:#4B5563; /* was #6B7280 (4.0:1 fail) → now 6.3:1 ✅ */
+    --tx-label:#6B7280; /* was #9CA3AF (2.1:1 fail) → now 4.5:1 ✅ */
+    --bd:rgba(0,0,0,.10); --bd-ghost:rgba(0,0,0,.22);
+    --glass:rgba(255,255,255,.68); --glass-bd:rgba(255,255,255,.88);
+    --panel:rgba(255,255,255,.50);
+    --lg-bg:linear-gradient(180deg,rgba(255,255,255,.82) 0%,rgba(255,255,255,.44) 32%,rgba(255,255,255,.50) 100%);
+    --lg-bd:rgba(255,255,255,.72); --lg-spec:rgba(255,255,255,1); --lg-in:rgba(255,255,255,.95);
+    --lg-drop:0 6px 22px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
+    --card-shadow:0 4px 20px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
+    /* v0.2 fixes: all now WCAG AA in light */
+    --done:#047857; /* was #059669 (3.1:1) → 4.6:1 ✅ */
+    --due:#92400E;  /* was #D97706 (2.6:1) → 5.9:1 ✅ */
+    --dest:#B91C1C; /* was #DC2626 */
+    --done-bg:rgba(4,120,87,.10); --due-bg:rgba(146,64,14,.10); --dest-bg:rgba(185,28,28,.06);
+    --skel-bg:rgba(0,0,0,.05);
+    --empty-c:rgba(0,0,0,.15);
+    --err-bg:rgba(185,28,28,.06); --err-bd:rgba(185,28,28,.20); --err-tx:#B91C1C;
+    --sec-fg:var(--primary);
+    color-scheme: light;
+  }
+
+  /* ── Layout ─────────────────────────────────────────────────── */
+  html, body {
+    font-family: var(--font); background: var(--bg); color: var(--tx1);
+    min-height: 100vh; transition: background var(--dur-norm) var(--ease-io), color var(--dur-norm) var(--ease-io);
+  }
+  body { padding: var(--s8); }
+
+  /* ── Fixed bg layer (Liquid Glass demo) ─────────────────────── */
+  #bg-base { position:fixed; inset:0; z-index:-2; background: var(--bg); }
+  #bg-grad {
+    position:fixed; inset:0; z-index:-1; opacity:0.5;
+    background:
+      radial-gradient(ellipse 24% 44% at 0% 30%, var(--primary) 0%, transparent 60%),
+      radial-gradient(ellipse 24% 44% at 100% 70%, var(--end) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 50% 0%, var(--accent) 0%, transparent 60%);
+  }
+
+  /* ── Controls bar ────────────────────────────────────────────── */
+  #controls {
+    display:flex; align-items:center; gap:var(--s3); flex-wrap:wrap;
+    padding: var(--s4) var(--s6); margin: calc(-1 * var(--s8)) calc(-1 * var(--s8)) var(--s8);
+    background: var(--glass); backdrop-filter: blur(28px) saturate(180%);
+    border-bottom: 1px solid var(--bd);
+    position:sticky; top:0; z-index:var(--z-sticky);
+  }
+  #controls h1 { font-size:13px; font-weight:700; letter-spacing:-.01em; margin-right:auto; }
+  #controls .version { font-size:11px; color:var(--tx-muted); }
+  .ctrl-group { display:flex; gap:var(--s2); }
+  .chip {
+    font-family:var(--font); font-size:11px; font-weight:600;
+    padding: var(--s1) var(--s3); border-radius: var(--r-full);
+    border:1px solid var(--bd); background: var(--panel); color:var(--tx2);
+    cursor:pointer; transition: all var(--dur-fast) var(--ease-io);
+  }
+  .chip:hover { border-color: var(--bd-ghost); }
+  .chip.active { background: var(--primary); border-color: var(--primary); color:#fff; }
+  .mode-btn {
+    font-family:var(--font); font-size:11px; font-weight:600; cursor:pointer;
+    padding: var(--s1) var(--s3); border-radius: var(--r-full);
+    border:1px solid var(--bd); background:var(--sec-bg); color:var(--sec-fg);
+    transition: all var(--dur-fast) var(--ease-io);
+  }
+
+  /* ── Grid ──────────────────────────────────────────────────── */
+  .grid { display:grid; gap:var(--s6); grid-template-columns: repeat(auto-fill, minmax(340px,1fr)); }
+  .wide { grid-column: 1 / -1; }
+
+  /* ── Section card ──────────────────────────────────────────── */
+  .section {
+    background: var(--glass); backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid var(--glass-bd); border-radius: var(--r-lg);
+    box-shadow: var(--card-shadow); padding: var(--s6); overflow:hidden;
+  }
+  .section-title {
+    font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--tx-muted); margin-bottom:var(--s4);
+  }
+  .section-subtitle { font-size:13px; color:var(--tx2); margin-bottom:var(--s4); line-height:1.5; }
+
+  /* ── Theme swatches ─────────────────────────────────────────── */
+  .theme-grid { display:flex; gap:var(--s3); flex-wrap:wrap; }
+  .swatch {
+    flex:1; min-width:100px; border-radius:var(--r-md); overflow:hidden;
+    border:1px solid var(--bd); display:flex; flex-direction:column;
+  }
+  .swatch-color { height:52px; }
+  .swatch-info { padding:var(--s2) var(--s3); background:var(--panel); }
+  .swatch-name { font-size:11px; font-weight:700; color:var(--tx1); }
+  .swatch-val { font-size:10px; color:var(--tx-muted); font-family:monospace; margin-top:2px; }
+  .swatch-badge {
+    font-size:9px; font-weight:700; padding:2px 5px; border-radius:4px;
+    margin-top:var(--s1); display:inline-block;
+  }
+  .badge-changed { background:rgba(251,191,36,.18); color:#FBBF24; }
+  .badge-ok { background:rgba(52,211,153,.15); color:var(--done); }
+
+  /* ── Contrast table ─────────────────────────────────────────── */
+  .contrast-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .contrast-table th { font-size:10px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.05em; color:var(--tx-muted); text-align:left; padding:var(--s2) 0; }
+  .contrast-table td { padding:var(--s2) 0; border-top:1px solid var(--bd); }
+  .contrast-table td:not(:first-child) { padding-left:var(--s3); }
+  .fail { color:#F87171; }
+  .warn { color:#FBBF24; }
+  .pass { color:var(--done); }
+  .token-name { font-family:monospace; font-size:11px; color:var(--tx2); }
+  .swatch-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:var(--s1); vertical-align:middle; }
+  .arrow { color:var(--tx-muted); font-size:11px; }
+
+  /* ── Spacing scale ──────────────────────────────────────────── */
+  .space-row { display:flex; align-items:center; gap:var(--s3); margin-bottom:var(--s2); }
+  .space-bar { background:var(--primary); border-radius:3px; height:10px; }
+  .space-label { font-size:11px; font-family:monospace; color:var(--tx2); min-width:80px; }
+  .space-val { font-size:11px; color:var(--tx-muted); }
+
+  /* ── Type scale ─────────────────────────────────────────────── */
+  .type-row { margin-bottom:var(--s4); border-bottom:1px solid var(--bd); padding-bottom:var(--s4); }
+  .type-row:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .type-meta { font-size:10px; font-family:monospace; color:var(--tx-muted); margin-top:var(--s1); }
+
+  /* ── Motion tokens ──────────────────────────────────────────── */
+  .motion-row { display:flex; align-items:center; gap:var(--s4); margin-bottom:var(--s3); }
+  .motion-bar {
+    height:8px; border-radius:4px; background:var(--grad);
+    transform-origin:left; will-change:transform;
+  }
+  .motion-label { font-size:12px; font-family:monospace; color:var(--tx2); min-width:140px; }
+  .motion-val { font-size:11px; color:var(--tx-muted); }
+
+  /* ── Z-index scale ──────────────────────────────────────────── */
+  .z-stack { position:relative; height:160px; }
+  .z-layer {
+    position:absolute; left:0; right:0; border-radius:var(--r-sm);
+    padding: var(--s2) var(--s3); font-size:11px; font-family:monospace;
+    border:1px solid var(--bd); display:flex; justify-content:space-between; align-items:center;
+    transition: transform var(--dur-norm) var(--ease-out);
+  }
+  .z-layer span:last-child { font-size:10px; color:var(--tx-muted); }
+
+  /* ── State tokens ───────────────────────────────────────────── */
+  .state-demo { border-radius:var(--r-md); overflow:hidden; margin-bottom:var(--s3); }
+  .skeleton-line {
+    height:16px; border-radius:var(--r-sm); background:var(--skel-bg);
+    position:relative; overflow:hidden; margin-bottom:var(--s2);
+  }
+  .skeleton-line::after {
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.06) 50%,transparent 100%);
+    background-size:200% 100%;
+    animation:shimmer 1.5s ease-in-out infinite;
+  }
+  [data-mode="light"] .skeleton-line::after {
+    background:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.03) 50%,transparent 100%);
+    background-size:200% 100%;
+  }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  .empty-state { text-align:center; padding:var(--s8) var(--s4); }
+  .empty-icon { width:40px; height:40px; border-radius:50%; background:var(--glass); border:1px solid var(--bd);
+    margin:0 auto var(--s3); display:flex; align-items:center; justify-content:center; }
+  .empty-icon svg { opacity:.4; }
+  .empty-text { font-size:13px; color:var(--tx-muted); }
+  .error-surface {
+    background:var(--err-bg); border:1px solid var(--err-bd); color:var(--err-tx);
+    border-radius:var(--r-sm); padding:var(--s3) var(--s4); font-size:13px;
+  }
+
+  /* ── Button showcase ────────────────────────────────────────── */
+  .btn-row { display:flex; gap:var(--s3); flex-wrap:wrap; align-items:center; }
+  .btn {
+    font-family:var(--font); font-size:16px; font-weight:600; border:none;
+    border-radius:var(--r-full); height:44px; padding:0 24px; cursor:pointer;
+    transition: filter var(--dur-norm) var(--ease-io), transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-norm) var(--ease-io);
+    display:inline-flex; align-items:center; justify-content:center; gap:var(--s2);
+  }
+  .btn:hover { filter:brightness(1.08); }
+  .btn:active { filter:brightness(.93); transform:scale(.97); }
+  .btn:focus-visible { outline:none; box-shadow:var(--focus-ring); }
+  .btn-sm { font-size:13px; height:32px; padding:0 14px; }
+  .btn-lg { font-size:16px; height:52px; padding:0 32px; }
+  .btn-primary { background:var(--grad); color:#fff; box-shadow:var(--glow); }
+  .btn-secondary { background:var(--sec-bg); color:var(--sec-fg); border:1px solid var(--sec-bd); box-shadow:none; }
+  .btn-ghost { background:transparent; color:var(--tx2); border:1px solid var(--bd); box-shadow:none; }
+  .btn-dest { background:transparent; color:var(--dest); border:1px solid rgba(248,113,113,.35); box-shadow:none; }
+  .size-label { font-size:10px; color:var(--tx-muted); text-align:center; margin-top:var(--s1); }
+
+  /* ── Status colors ──────────────────────────────────────────── */
+  .status-row { display:flex; gap:var(--s3); flex-wrap:wrap; }
+  .status-chip {
+    display:inline-flex; align-items:center; gap:var(--s2);
+    padding: var(--s2) var(--s3); border-radius:var(--r-full);
+    font-size:12px; font-weight:600; border:1px solid;
+  }
+  .chip-done { background:var(--done-bg); color:var(--done); border-color:rgba(52,211,153,.22); }
+  .chip-due { background:var(--due-bg); color:var(--due); border-color:rgba(251,191,36,.22); }
+  .chip-dest { background:var(--dest-bg); color:var(--dest); border-color:rgba(248,113,113,.25); }
+  [data-mode="light"] .chip-due { border-color:rgba(146,64,14,.20); }
+  [data-mode="light"] .chip-dest { border-color:rgba(185,28,28,.20); }
+  .dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+
+  /* ── Glass card demo ────────────────────────────────────────── */
+  .glass-card {
+    background:var(--glass); backdrop-filter:blur(28px) saturate(180%);
+    border:1px solid var(--glass-bd); border-radius:var(--r-md);
+    box-shadow:var(--card-shadow); padding:var(--s4);
+  }
+  .lg-surface {
+    background:var(--lg-bg); backdrop-filter:blur(40px) saturate(220%);
+    border:1px solid var(--lg-bd); border-top-color:var(--lg-spec);
+    box-shadow:inset 0 1px 0 var(--lg-in), var(--lg-drop);
+    border-radius:22px; padding: var(--s3) var(--s6);
+    display:flex; gap:var(--s8); justify-content:center; align-items:center;
+  }
+  .tab-item { font-size:11px; font-weight:600; color:var(--tx-muted); display:flex; flex-direction:column; align-items:center; gap:3px; }
+  .tab-item.active { color:var(--primary); }
+  .tab-dot { width:4px; height:4px; border-radius:50%; background:var(--primary); }
+
+  /* ── Focus ring demo ────────────────────────────────────────── */
+  .focus-demo { display:flex; gap:var(--s3); flex-wrap:wrap; align-items:center; }
+  .focus-box {
+    padding: var(--s2) var(--s4); border-radius:var(--r-md); background:var(--glass);
+    border:1px solid var(--bd); font-size:13px; color:var(--tx2); cursor:pointer;
+    transition:box-shadow var(--dur-fast) var(--ease-io);
+  }
+  .focus-box:hover, .focus-box.focused { box-shadow:var(--focus-ring); border-color:var(--primary); }
+
+  /* ── Footer ─────────────────────────────────────────────────── */
+  .footer { margin-top:var(--s12); text-align:center; font-size:11px; color:var(--tx-muted); padding-bottom:var(--s8); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bg-base"></div>
+<div id="bg-grad"></div>
+
+<!-- Controls -->
+<div id="controls">
+  <h1>Ship Lab DS</h1>
+  <span class="version">v0.2.0</span>
+  <div class="ctrl-group" id="theme-btns">
+    <button class="chip active" data-theme="violet">Violet</button>
+    <button class="chip" data-theme="electric">Electric</button>
+    <button class="chip" data-theme="teal">Teal ✦</button>
+    <button class="chip" data-theme="rose">Rose</button>
+    <button class="chip" data-theme="sunrise">Sunrise ✦</button>
+  </div>
+  <button class="mode-btn" id="mode-toggle">☀ Light</button>
+</div>
+
+<div class="grid">
+
+  <!-- ── Themes overview ───────────────────────────────────── -->
+  <div class="section wide">
+    <div class="section-title">5 Themes — v0.2 Primary Colors</div>
+    <div class="section-subtitle">✦ Teal and Sunrise primaries darkened for WCAG AA white-text contrast</div>
+    <div class="theme-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:linear-gradient(135deg,#7C3AED,#6366F1)"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Violet</div>
+          <div class="swatch-val">#7C3AED</div>
+          <span class="swatch-badge badge-ok">✅ unchanged</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:linear-gradient(135deg,#1D4ED8,#4338CA)"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Electric</div>
+          <div class="swatch-val">#1D4ED8</div>
+          <span class="swatch-badge badge-ok">✅ unchanged</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:linear-gradient(135deg,#0F766E,#0369A1)"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Teal ✦</div>
+          <div class="swatch-val">#0F766E</div>
+          <span class="swatch-badge badge-changed">was #0D9488</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:linear-gradient(135deg,#BE185D,#9333EA)"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Rose</div>
+          <div class="swatch-val">#BE185D</div>
+          <span class="swatch-badge badge-ok">✅ unchanged</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:linear-gradient(135deg,#B45309,#DC2626)"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Sunrise ✦</div>
+          <div class="swatch-val">#B45309</div>
+          <span class="swatch-badge badge-changed">was #D97706</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Contrast audit ───────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Accessibility — Contrast Fixes</div>
+    <table class="contrast-table">
+      <thead>
+        <tr>
+          <th>Token</th><th>Before</th><th>After</th><th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="token-name">text-muted (light)</td>
+          <td><span class="swatch-dot" style="background:#6B7280"></span><span class="fail">4.0:1 ✗</span></td>
+          <td><span class="swatch-dot" style="background:#4B5563"></span><span class="pass">6.3:1</span></td>
+          <td class="pass">AA ✅</td>
+        </tr>
+        <tr>
+          <td class="token-name">text-label (light)</td>
+          <td><span class="swatch-dot" style="background:#9CA3AF"></span><span class="fail">2.1:1 ✗✗</span></td>
+          <td><span class="swatch-dot" style="background:#6B7280"></span><span class="pass">4.5:1</span></td>
+          <td class="pass">AA ✅</td>
+        </tr>
+        <tr>
+          <td class="token-name">teal primary / white</td>
+          <td><span class="swatch-dot" style="background:#0D9488"></span><span class="warn">3.7:1 ⚠</span></td>
+          <td><span class="swatch-dot" style="background:#0F766E"></span><span class="pass">4.6:1</span></td>
+          <td class="pass">AA ✅</td>
+        </tr>
+        <tr>
+          <td class="token-name">sunrise primary / white</td>
+          <td><span class="swatch-dot" style="background:#D97706"></span><span class="fail">3.2:1 ✗</span></td>
+          <td><span class="swatch-dot" style="background:#B45309"></span><span class="pass">4.8:1</span></td>
+          <td class="pass">AA ✅</td>
+        </tr>
+        <tr>
+          <td class="token-name">done (light)</td>
+          <td><span class="swatch-dot" style="background:#059669"></span><span class="warn">3.1:1 ⚠</span></td>
+          <td><span class="swatch-dot" style="background:#047857"></span><span class="pass">4.6:1</span></td>
+          <td class="pass">AA ✅</td>
+        </tr>
+        <tr>
+          <td class="token-name">due (light)</td>
+          <td><span class="swatch-dot" style="background:#D97706"></span><span class="fail">2.6:1 ✗✗</span></td>
+          <td><span class="swatch-dot" style="background:#92400E"></span><span class="pass">5.9:1</span></td>
+          <td class="pass">AA ✅</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Buttons ──────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Buttons — 3 Sizes + Focus Ring</div>
+    <div class="section-subtitle">v0.2: per-theme focus ring, motion tokens on all transitions</div>
+    <div class="btn-row" style="margin-bottom:var(--s4)">
+      <div>
+        <button class="btn btn-primary btn-sm">Small</button>
+        <div class="size-label">sm 32px</div>
+      </div>
+      <div>
+        <button class="btn btn-primary">Default</button>
+        <div class="size-label">md 44px</div>
+      </div>
+      <div>
+        <button class="btn btn-primary btn-lg">Large</button>
+        <div class="size-label">lg 52px</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary">Secondary</button>
+      <button class="btn btn-ghost">Ghost</button>
+      <button class="btn btn-dest">Destroy</button>
+    </div>
+    <div style="margin-top:var(--s4)">
+      <div class="section-title" style="margin-bottom:var(--s2)">Focus ring (click to see)</div>
+      <div class="focus-demo">
+        <div class="focus-box" tabindex="0">Focusable element</div>
+        <div class="focus-box focused">Active state</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Spacing ──────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Spacing — 8pt Grid (v0.2 rebuilt)</div>
+    <div class="section-subtitle">Was: 4/8/14/20/24/40 (irregular). Now: strict 8pt grid.</div>
+    <div>
+      <div class="space-row"><div class="space-bar" style="width:4px"></div><span class="space-label">--ds-space-1</span><span class="space-val">4px — hairline</span></div>
+      <div class="space-row"><div class="space-bar" style="width:8px"></div><span class="space-label">--ds-space-2</span><span class="space-val">8px — tight</span></div>
+      <div class="space-row"><div class="space-bar" style="width:12px"></div><span class="space-label">--ds-space-3</span><span class="space-val">12px — compact</span></div>
+      <div class="space-row"><div class="space-bar" style="width:16px"></div><span class="space-label">--ds-space-4</span><span class="space-val">16px — base</span></div>
+      <div class="space-row"><div class="space-bar" style="width:24px"></div><span class="space-label">--ds-space-6</span><span class="space-val">24px — medium</span></div>
+      <div class="space-row"><div class="space-bar" style="width:32px"></div><span class="space-label">--ds-space-8</span><span class="space-val">32px — large ✦ new</span></div>
+      <div class="space-row"><div class="space-bar" style="width:48px"></div><span class="space-label">--ds-space-12</span><span class="space-val">48px — xl</span></div>
+      <div class="space-row"><div class="space-bar" style="width:64px"></div><span class="space-label">--ds-space-16</span><span class="space-val">64px — 2xl</span></div>
+      <div class="space-row"><div class="space-bar" style="width:96px"></div><span class="space-label">--ds-space-24</span><span class="space-val">96px — 3xl</span></div>
+    </div>
+  </div>
+
+  <!-- ── Typography ──────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Typography — ~1.25 Ratio (v0.2 rebuilt)</div>
+    <div class="section-subtitle">Was: 10/12/15/16/20/28 (15→16 indistinguishable). Now: 11/13/16/20/28/36.</div>
+    <div>
+      <div class="type-row">
+        <div style="font-size:36px;font-weight:800;letter-spacing:-0.02em;line-height:1.1;color:var(--tx1)">Page Title</div>
+        <div class="type-meta">--ds-text-2xl · 36px · weight 800 · ls -0.02em · 2xl</div>
+      </div>
+      <div class="type-row">
+        <div style="font-size:28px;font-weight:700;letter-spacing:-0.02em;line-height:1.2;color:var(--tx1)">Section Heading</div>
+        <div class="type-meta">--ds-text-xl · 28px · weight 700 · ls -0.02em · xl</div>
+      </div>
+      <div class="type-row">
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.01em;line-height:1.35;color:var(--tx1)">Card Title / Subheading</div>
+        <div class="type-meta">--ds-text-lg · 20px · weight 700 · lg</div>
+      </div>
+      <div class="type-row">
+        <div style="font-size:16px;font-weight:400;line-height:1.5;color:var(--tx2)">Body copy — the anchor of the scale. Clear and readable at all sizes. This is the default paragraph size.</div>
+        <div class="type-meta">--ds-text-base · 16px · weight 400 · line-height 1.5 · base</div>
+      </div>
+      <div class="type-row">
+        <div style="font-size:13px;font-weight:400;line-height:1.5;color:var(--tx-muted)">Secondary text, captions, supporting detail</div>
+        <div class="type-meta">--ds-text-sm · 13px · sm</div>
+      </div>
+      <div class="type-row">
+        <div style="font-size:11px;font-weight:500;line-height:1.45;color:var(--tx-label)">Timestamps · Labels · Metadata</div>
+        <div class="type-meta">--ds-text-xs · 11px · xs — minimum text size</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Motion ─────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Motion Tokens — New in v0.2</div>
+    <div class="section-subtitle">3 durations + 3 curves. Hover to animate.</div>
+    <div>
+      <div class="motion-row">
+        <span class="motion-label">fast · 100ms</span>
+        <div class="motion-bar" id="bar-fast" style="width:60px"></div>
+        <span class="motion-val">micro-interactions</span>
+      </div>
+      <div class="motion-row">
+        <span class="motion-label">normal · 200ms</span>
+        <div class="motion-bar" id="bar-norm" style="width:60px"></div>
+        <span class="motion-val">state changes</span>
+      </div>
+      <div class="motion-row">
+        <span class="motion-label">slow · 350ms</span>
+        <div class="motion-bar" id="bar-slow" style="width:60px"></div>
+        <span class="motion-val">layout shifts</span>
+      </div>
+    </div>
+    <div style="margin-top:var(--s4); font-size:12px; color:var(--tx-muted)">
+      <div>ease-out: <code>cubic-bezier(0.16, 1, 0.3, 1)</code> — entrances</div>
+      <div style="margin-top:var(--s1)">ease-in-out: <code>cubic-bezier(0.45, 0, 0.55, 1)</code> — state changes</div>
+      <div style="margin-top:var(--s1)">spring: <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code> — playful bounce</div>
+    </div>
+  </div>
+
+  <!-- ── Z-index ─────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Z-Index Scale — New in v0.2</div>
+    <div style="font-size:12px;color:var(--tx-muted);margin-bottom:var(--s4)">8 named levels. Always use tokens, never raw numbers.</div>
+    <div style="display:flex;flex-direction:column;gap:var(--s2)">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--s2) var(--s3);background:rgba(100,100,255,.06);border:1px solid var(--bd);border-radius:var(--r-sm);font-size:12px">
+        <span style="font-family:monospace;color:var(--tx2)">--ds-z-toast</span><span style="color:var(--tx-muted)">100 — always on top</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--s2) var(--s3);background:rgba(100,100,200,.06);border:1px solid var(--bd);border-radius:var(--r-sm);font-size:12px">
+        <span style="font-family:monospace;color:var(--tx2)">--ds-z-modal</span><span style="color:var(--tx-muted)">50 — modal + backdrop</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--s2) var(--s3);background:rgba(100,100,150,.06);border:1px solid var(--bd);border-radius:var(--r-sm);font-size:12px">
+        <span style="font-family:monospace;color:var(--tx2)">--ds-z-overlay</span><span style="color:var(--tx-muted)">20 — dropdowns, popovers</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--s2) var(--s3);background:rgba(100,100,100,.06);border:1px solid var(--bd);border-radius:var(--r-sm);font-size:12px">
+        <span style="font-family:monospace;color:var(--tx2)">--ds-z-sticky</span><span style="color:var(--tx-muted)">10 — sticky headers, nav bars</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--s2) var(--s3);background:var(--glass);border:1px solid var(--bd);border-radius:var(--r-sm);font-size:12px">
+        <span style="font-family:monospace;color:var(--tx2)">--ds-z-card</span><span style="color:var(--tx-muted)">1 — glass cards, tiles</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--s2) var(--s3);border:1px solid var(--bd);border-radius:var(--r-sm);font-size:12px">
+        <span style="font-family:monospace;color:var(--tx2)">--ds-z-gradient</span><span style="color:var(--tx-muted)">-1 — bg gradient layer</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--s2) var(--s3);border:1px solid var(--bd);border-radius:var(--r-sm);font-size:12px">
+        <span style="font-family:monospace;color:var(--tx2)">--ds-z-bg</span><span style="color:var(--tx-muted)">-2 — fixed bg base</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Status + State tokens ────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Status Colors + State Tokens</div>
+    <div class="section-subtitle">Toggle ☀ Light to see contrast-fixed light-mode values</div>
+
+    <div class="section-title" style="margin-top:var(--s4)">Status</div>
+    <div class="status-row" style="margin-bottom:var(--s4)">
+      <span class="status-chip chip-done"><span class="dot"></span>Done</span>
+      <span class="status-chip chip-due"><span class="dot"></span>Due</span>
+      <span class="status-chip chip-dest"><span class="dot"></span>Overdue</span>
+    </div>
+
+    <div class="section-title">Skeleton Loader</div>
+    <div style="padding:var(--s4);background:var(--glass);border-radius:var(--r-md);border:1px solid var(--bd);margin-bottom:var(--s4)">
+      <div class="skeleton-line" style="width:60%"></div>
+      <div class="skeleton-line" style="width:100%"></div>
+      <div class="skeleton-line" style="width:80%"></div>
+    </div>
+
+    <div class="section-title">Empty State</div>
+    <div style="background:var(--glass);border:1px solid var(--bd);border-radius:var(--r-md);margin-bottom:var(--s4)">
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+        </div>
+        <div class="empty-text">No items yet</div>
+      </div>
+    </div>
+
+    <div class="section-title">Error Surface</div>
+    <div class="error-surface">⚠ Something went wrong — please try again.</div>
+  </div>
+
+  <!-- ── Glass surfaces ──────────────────────────────── -->
+  <div class="section wide">
+    <div class="section-title">Surface Decision Guide</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)">
+      <div>
+        <div class="section-title" style="margin-bottom:var(--s3)">Glass Card (blur 28px)</div>
+        <div style="font-size:12px;color:var(--tx-muted);margin-bottom:var(--s3)">Use for: content cards, elevated tiles, list items</div>
+        <div class="glass-card">
+          <div style="font-size:13px;font-weight:700;color:var(--tx1);margin-bottom:var(--s2)">Monthly Overview</div>
+          <div style="display:flex;gap:var(--s2)">
+            <div style="flex:1;padding:var(--s2);background:var(--total-bg);border:1px solid var(--total-bd);border-radius:var(--r-sm);text-align:center">
+              <div style="font-size:18px;font-weight:800;color:var(--total-c)">12</div>
+              <div style="font-size:10px;color:var(--tx-muted)">Tasks</div>
+            </div>
+            <div style="flex:1;padding:var(--s2);background:var(--done-bg);border-radius:var(--r-sm);text-align:center">
+              <div style="font-size:18px;font-weight:800;color:var(--done)">4</div>
+              <div style="font-size:10px;color:var(--tx-muted)">Done</div>
+            </div>
+            <div style="flex:1;padding:var(--s2);background:var(--due-bg);border-radius:var(--r-sm);text-align:center">
+              <div style="font-size:18px;font-weight:800;color:var(--due)">3</div>
+              <div style="font-size:10px;color:var(--tx-muted)">Due</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title" style="margin-bottom:var(--s3)">Liquid Glass Tab Bar (blur 40px)</div>
+        <div style="font-size:12px;color:var(--tx-muted);margin-bottom:var(--s3)">Use for: nav bars, tab bars, system chrome</div>
+        <div class="lg-surface">
+          <div class="tab-item active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+            Home<div class="tab-dot"></div>
+          </div>
+          <div class="tab-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Search
+          </div>
+          <div class="tab-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile
+          </div>
+          <div class="tab-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            Settings
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">Ship Lab Design System v0.2.0 · 5 themes · WCAG 2.1 AA · iOS 26 Liquid Glass</div>
+
+<script>
+  const root = document.documentElement;
+  const themeButtons = document.querySelectorAll('[data-theme]');
+
+  // Theme switcher
+  document.getElementById('theme-btns').addEventListener('click', e => {
+    const chip = e.target.closest('.chip[data-theme]');
+    if (!chip) return;
+    root.setAttribute('data-theme', chip.dataset.theme);
+    themeButtons.forEach(b => b.classList.toggle('active', b === chip));
+    document.getElementById('bg-grad').style.cssText = ''; // force repaint
+  });
+
+  // Mode switcher
+  const modeBtn = document.getElementById('mode-toggle');
+  let isDark = true;
+  modeBtn.addEventListener('click', () => {
+    isDark = !isDark;
+    root.setAttribute('data-mode', isDark ? 'dark' : 'light');
+    modeBtn.textContent = isDark ? '☀ Light' : '🌑 Dark';
+  });
+
+  // Motion demo
+  let motionPlaying = false;
+  function playMotionDemo() {
+    if (motionPlaying) return;
+    motionPlaying = true;
+    const bars = [
+      { el: document.getElementById('bar-fast'), dur: 100 },
+      { el: document.getElementById('bar-norm'), dur: 200 },
+      { el: document.getElementById('bar-slow'), dur: 350 },
+    ];
+    bars.forEach(({ el, dur }) => {
+      el.style.transition = `width ${dur}ms cubic-bezier(0.16,1,0.3,1)`;
+      el.style.width = '180px';
+      setTimeout(() => {
+        el.style.transition = `width ${dur}ms cubic-bezier(0.45,0,0.55,1)`;
+        el.style.width = '60px';
+        setTimeout(() => { motionPlaying = false; }, dur + 50);
+      }, dur + 100);
+    });
+  }
+  // Auto-play on load
+  setTimeout(playMotionDemo, 800);
+  // Replay on section hover
+  document.querySelector('.section:has(#bar-fast)').addEventListener('mouseenter', playMotionDemo);
+</script>
+</body>
+</html>

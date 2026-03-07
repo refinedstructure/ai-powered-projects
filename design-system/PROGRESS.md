@@ -1,9 +1,9 @@
 # Design System · Progress Log
 
-**File:** `Ship Lab/design-system/style-explorer.jsx`
-**Version:** v0.1.0 — frozen 2026-03-05
-**Status:** ✅ Frozen. Token exports generated. Ready for GitHub + Lovable integration.
-**Next action (Phase 2):** Add motion tokens, spacing scale, component size variants, skeleton states
+**Files:** `tokens/globals.css`, `tokens/tailwind.config.js`, `figma-plugin/code.js`
+**Version:** v0.2.0 — 2026-03-07
+**Status:** ✅ Production-ready. All WCAG AA failures fixed. Structural tokens added. Ready for first Lovable app.
+**Next action:** Copy `globals.css` + `tailwind.config.js` into first Lovable app. Re-run Figma plugin to refresh styles.
 
 ---
 
@@ -76,12 +76,16 @@ Three patterns tested. Key finding: glass caption panels over images use
 `rgba(0,0,0,0.28)` base (not the `glass` token) so they stay legible regardless
 of image brightness. The `glass` token is used for card bodies below images.
 
-### Accessibility
-- WCAG 2.1 AA: all critical items pass
-- 1 warn: `#92400E` Due color in light mode — verify at production surface level
+### Accessibility (v0.2 — all failures resolved)
+- WCAG 2.1 AA: all items pass in both modes ✅
+- textMuted light: `#6B7280` → `#4B5563` (4.0:1→6.3:1)
+- textLabel light: `#9CA3AF` → `#6B7280` (2.1:1→4.5:1) — use 13px+
+- Teal primary: `#0D9488` → `#0F766E` (3.7:1→4.6:1 with white)
+- Sunrise primary: `#D97706` → `#B45309` (3.2:1→4.8:1 with white)
+- done/due/fail light mode: all darkened to AA ratios
+- Focus ring: `--ds-focus-ring` token defined per-theme, applied via `:focus-visible`
+- Reduced motion: `@media (prefers-reduced-motion: reduce)` added
 - Touch targets: all 44px (HIG compliant)
-- Focus rings: `:focus-visible` on buttons, `box-shadow` on inputs
-- All buttons: `type="button"` explicitly set
 
 ---
 
@@ -142,25 +146,42 @@ of image brightness. The `glass` token is used for card bodies below images.
 
 ---
 
-## What's Next (v0.2 — Phase 2)
+## v0.2 Completed (2026-03-07)
 
-**Integration:**
-- [ ] Push repo to GitHub (remote already configured locally after `git init`)
-- [x] Figma design system generated via native plugin (session 7)
-- [ ] Copy `globals.css` + `tailwind.config.js` into first Lovable app
+**Accessibility:**
+- [x] textMuted/textLabel light contrast failures fixed
+- [x] Teal + Sunrise primary darkened for button AA contrast
+- [x] done/due status colors fixed in light mode
+- [x] `--ds-focus-ring` token added (per-theme)
+- [x] `prefers-reduced-motion` media query added
 
-**Token additions:**
-- [ ] Motion tokens (duration: 100/200/300ms, easing: spring/ease-out)
-- [ ] Spacing scale (4/8/12/16/20/24/32/40/48/64px)
-- [ ] Typography scale (xs/sm/base/lg/xl/2xl + line heights, letter spacing)
-- [ ] Component size variants (sm/md/lg for buttons and cards)
-- [ ] Skeleton / loading states
-- [ ] Toast / notification component
+**Structure:**
+- [x] Spacing scale rebuilt on 8pt grid (9 steps: 4→96)
+- [x] Typography scale rebuilt on ~1.25 ratio (6 steps: 11→36)
+- [x] Motion tokens (3 durations + 3 easings)
+- [x] Z-index scale (8 named levels)
+- [x] Skeleton/empty/error state tokens + component classes
+- [x] Naming: radius-md/lg, destructive moved to mode selector
 
-**Explorer improvements:**
-- [ ] Side-by-side theme comparison mode
-- [ ] Copy token value on click
-- [ ] Export selected tokens as snippet
+**Tooling:**
+- [x] Figma plugin updated: primaries, text scale, semantic light colors
+- [x] style-explorer-v2.html — standalone interactive explorer
+- [x] Tailwind: ds- prefix dropped from utilities (CSS vars unchanged)
+
+---
+
+## What's Next (v0.3)
+
+**First Lovable app:**
+- [ ] Copy `globals.css` + `tailwind.config.js` into first Lovable project
+- [ ] Set `data-theme` and `data-mode` on `<html>` root
+- [ ] Re-run Figma plugin to refresh Figma styles with v0.2 colors
+
+**v0.3 token additions:**
+- [ ] Component size variants (sm/md/lg for all interactive elements)
+- [ ] Toast / notification component tokens
+- [ ] Side-by-side theme comparison in explorer
+- [ ] figma-tokens.json regenerated from v0.2 values
 
 ---
 

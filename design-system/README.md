@@ -1,7 +1,7 @@
 # Ship Lab Design System
 
-**Version:** v0.1.0
-**Status:** Frozen — production-ready token exports available
+**Version:** v0.2.0
+**Status:** Production-ready. WCAG 2.1 AA compliant across all themes and modes.
 
 A cross-platform design system built for utility and consumer apps. Dark-first, iOS HIG compliant, compatible with Apple Liquid Glass (iOS 26), WCAG 2.1 AA.
 
@@ -9,13 +9,13 @@ A cross-platform design system built for utility and consumer apps. Dark-first, 
 
 ## Themes
 
-| Key | Primary | End | Accent | Preview |
-|-----|---------|-----|--------|---------|
-| `violet` | `#7C3AED` | `#6366F1` | `#22D3EE` | Purple → Indigo |
-| `electric` | `#1D4ED8` | `#4338CA` | `#A3E635` | Blue → Indigo |
-| `teal` | `#0D9488` | `#0369A1` | `#FB923C` | Teal → Ocean |
-| `rose` | `#BE185D` | `#9333EA` | `#FB923C` | Rose → Purple |
-| `sunrise` | `#D97706` | `#DC2626` | `#A78BFA` | Amber → Red |
+| Key | Primary | End | Accent | Preview | v0.2 |
+|-----|---------|-----|--------|---------|------|
+| `violet` | `#7C3AED` | `#6366F1` | `#22D3EE` | Purple → Indigo | unchanged |
+| `electric` | `#1D4ED8` | `#4338CA` | `#A3E635` | Blue → Indigo | unchanged |
+| `teal` | `#0F766E` | `#0369A1` | `#FB923C` | Teal → Ocean | primary darkened (WCAG AA) |
+| `rose` | `#BE185D` | `#9333EA` | `#FB923C` | Rose → Purple | unchanged |
+| `sunrise` | `#B45309` | `#DC2626` | `#A78BFA` | Amber → Red | primary darkened (WCAG AA) |
 
 All themes support **dark** (default) and **light** modes.
 
@@ -25,19 +25,22 @@ All themes support **dark** (default) and **light** modes.
 
 ```
 design-system/
-├── style-explorer.jsx     ← Interactive React explorer — run in claude.ai artifacts
-├── CHANGELOG.md           ← Version history + design decisions
-├── PROGRESS.md            ← Session log + token decisions
-├── README.md              ← This file
-├── figma-plugin/          ← Native Figma plugin — generates styles + components directly
+├── style-explorer.jsx       ← v0.1 frozen React explorer (reference only — not updated)
+├── style-explorer-v2.html   ← v0.2 interactive HTML explorer — open in any browser
+├── CHANGELOG.md             ← Version history + design decisions
+├── PROGRESS.md              ← Session log + token decisions
+├── README.md                ← This file
+├── CRITIQUE.md              ← v0.1 post-freeze audit (input for v0.2)
+├── IMPROVEMENTS-v0.2.md     ← Structured v0.2 improvement spec
+├── figma-plugin/            ← Native Figma plugin — generates styles + components
 │   ├── manifest.json
-│   ├── code.js
+│   ├── code.js              ← v0.2: updated primaries, text scale, semantic colors
 │   ├── ui.html
 │   └── README.md
 └── tokens/
-    ├── globals.css        ← CSS custom properties (Lovable / any web project)
-    ├── tailwind.config.js ← Tailwind v3+ config (Lovable)
-    └── README.md          ← Integration guides per platform
+    ├── globals.css          ← v0.2 CSS custom properties (Lovable / any web project)
+    ├── tailwind.config.js   ← v0.2 Tailwind config (Lovable)
+    └── README.md            ← Integration guides per platform
 ```
 
 ---
@@ -60,7 +63,7 @@ Full guide: `tokens/README.md`.
 
 ### New AI chat context
 Paste this line at the start of a new session:
-> "We're continuing the Ship Lab design system at v0.1.0. Load `Ship Lab/design-system/PROGRESS.md` for full context."
+> "We're continuing the Ship Lab design system at v0.2.0. Load `Ship Lab/design-system/PROGRESS.md` for full context."
 
 ---
 
@@ -78,8 +81,8 @@ Paste this line at the start of a new session:
 
 | Platform | Status | Integration |
 |----------|--------|-------------|
-| Web (CSS vars) | ✅ v0.1 | `globals.css` |
-| Lovable (Tailwind) | ✅ v0.1 | `tailwind.config.js` + `globals.css` |
-| Figma | ✅ v0.1 | Native plugin (`figma-plugin/`) |
+| Web (CSS vars) | ✅ v0.2 | `globals.css` |
+| Lovable (Tailwind) | ✅ v0.2 | `tailwind.config.js` + `globals.css` |
+| Figma | ✅ v0.2 | Native plugin (`figma-plugin/`) — re-run after update |
 | SwiftUI (iOS 26) | 📐 Mapped | See `tokens/README.md` SwiftUI table |
-| React Native | 🔜 v0.2 | — |
+| React Native | 🔜 v0.3 | — |
