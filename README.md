@@ -7,7 +7,7 @@ Building premium products using AI-assisted development workflows.
 
 ## Projects
 
-### [InkRush](https://github.com/refinedstructure/glass-canvas)
+### [InkRush](https://github.com/refinedstructure/glass-canvas) | [Live Demo](https://inkrush-writer.vercel.app/)
 A high-stakes writing editor designed to cure writer's block. Built with a stunning dark-mode glassmorphism aesthetic, featuring liquid glass overlays, vibrant ambient gradients, and highly intentional UX.
 
 ## The Design System
