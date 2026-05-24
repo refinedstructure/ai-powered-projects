@@ -30,6 +30,7 @@ design-system/
 ├── CHANGELOG.md             ← Version history + design decisions
 ├── PROGRESS.md              ← Session log + token decisions
 ├── README.md                ← This file
+├── UX_GUIDELINES.md         ← v0.2.1 Core layout, hierarchy, and UI patterns
 ├── CRITIQUE.md              ← v0.1 post-freeze audit (input for v0.2)
 ├── IMPROVEMENTS-v0.2.md     ← Structured v0.2 improvement spec
 ├── figma-plugin/            ← Native Figma plugin — generates styles + components
